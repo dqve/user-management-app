@@ -24,6 +24,12 @@ This Angular-based User Management App allows users to sign up, submit user info
    - Users can perform CRUD operations only on the records they are admins for.
    - They cannot remove or update their own records.
 
+## Details
+
+
+- Application url: https://github.com/dqve/user-management-json-server
+- Application Repo: https://github.com/dqve/user-management-app
+- Server Repo: https://github.com/dqve/user-management-json-server
 
 ## Installation
 
@@ -76,11 +82,13 @@ The app will be accessible at http://localhost:4200/ by default.
 
 ## Issues Encountered
 No particular issues were faced, but with more time, here is a list of things I would have loved to implement:
-- Declare clearer types.
+
 - Create more intricate tests.
 - Implement a more robust server.
   - name, password and email validation.
   - Status codes depending on the responses.
+- Add more comments, code guides, and documentations.
+- - Declare more precise types for certain code blocks.
 - Create a central api request handler to make error and success handling general.
 - Add mobile view side bar (very low risk).
 - Add a central export for shared and individual components to improve verbosity.
@@ -90,7 +98,7 @@ No particular issues were faced, but with more time, here is a list of things I 
 - Add actions for updating users on user list.
 - Create a url and request library for all urls and request.
 
-## Additional Details
+## More Application Details
 - Users can sign up without logging in initially.
 - Admin approval is required for login.
 - Admin status is automatically granted to the last user who approves a new user.

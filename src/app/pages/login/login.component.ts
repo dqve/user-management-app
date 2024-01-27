@@ -1,4 +1,4 @@
-
+// Import statements for Angular and third-party libraries
 import { Component, computed, inject, signal } from '@angular/core';
 import { radixCheck, radixChevronDown } from '@ng-icons/radix-icons';
 import {
@@ -31,11 +31,14 @@ import { AuthenticationService } from '../../services/authentication.service';
 import { NgIf } from '@angular/common';
 import { InputErrorComponent } from '../../shared/input-error.component';
 
+// Type definition for the Framework object
 type Framework = { label: string; value: string };
 
+// Angular Component decorator
 @Component({
   selector: 'user-management-login',
-  // standalone: true,
+  standalone: true,
+  // Importing necessary Angular directives and components
   imports: [
     NgIf,
     HlmIconComponent,
@@ -58,18 +61,25 @@ type Framework = { label: string; value: string };
     SignalInputDirective,
     HttpClientModule
   ],
+  // Providing icons and error component for the component
   providers: [provideIcons({ radixCheck, radixChevronDown }), withErrorComponent(InputErrorComponent)],
+  // Template URL for the HTML associated with this component
   templateUrl: './login.component.html',
 })
+
+// Angular Component class for the login component
 export class LoginComponent {
  
+  // Constructor injecting necessary services
   constructor(
     private userService: UserService,
     private authService: AuthenticationService
   ) { }
 
+  // Injecting SignalFormBuilder to create reactive forms
   private _sfb = inject(SignalFormBuilder);
 
+  // Signal for managing the state of the login component
   public state = signal<{
     status: 'idle' | 'loading' | 'success' | 'error';
     error: unknown | null;
@@ -81,11 +91,13 @@ export class LoginComponent {
     updatedFrom: 'initial',
   });
 
+  // Computed property to determine if the form is in a loading state during user creation
   public createLoad = computed(() => this.state().status === 'loading' && this.state().updatedFrom === 'create');
 
+  // Signal for tracking the currently selected framework
   public currentFramework = signal<Framework | undefined>(undefined);
 
-
+  // Reactive form definition using SignalFormBuilder
   public form = this._sfb.createFormGroup(() => ({
     email: this._sfb.createFormField<string>('', {
       validators: [
@@ -105,32 +117,37 @@ export class LoginComponent {
     }),
   }));
 
-
+  // Method to handle user login
   public loginUser() {
+    // Check if the form is valid
     if (this.form.state() !== 'VALID') {
       this.form.markAllAsTouched();
       return;
     }
+
+    // Extract email and password from the form
     const { email, password } = this.form.value();
 
+    // Set the state to loading
     this.state.set({ ...this.state(), status: "loading" });
     this.state.set({ ...this.state(), updatedFrom: "create" });
 
+    // Call the login service to authenticate the user
     this.authService.login({ email, password}).subscribe(
       (response) => {
         // Handle success
         this.state.set({ ...this.state(), status: "success", updatedFrom: "initial" });
 
+        // Reset the form after successful login
         this.form.reset();
       },
       (error) => {
         // Handle error
         console.error('Error logging in user:', error);
 
+        // Set the state to error
         this.state.set({ ...this.state(), status: "error", updatedFrom: "initial" });
       }
     );
-
   }
-
 }

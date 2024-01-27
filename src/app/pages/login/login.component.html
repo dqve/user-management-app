@@ -5,6 +5,7 @@
 
 
 <div class="flex flex-col space-y-2 text-center mb-5">
+    <!-- Title and subtitle for the login section -->
     <h1 class="text-2xl font-semibold tracking-tight">
         Log into your account
     </h1>
@@ -12,19 +13,27 @@
         Enter your email below to log into your account
     </p>
 </div>
+
+<!-- Card Section for Login Form -->
 <section class="w-full" hlmCard>
+    <!-- Card Header with a welcome message -->
     <div hlmCardHeader>
         <h3 hlmCardTitle>Welcome back 👋</h3>
         <p hlmCardDescription>We've missed you a whole lot.</p>
     </div>
+
+    <!-- Login Form -->
     <form>
+        <!-- Form Content with input fields for email and secure user ID -->
         <div hlmCardContent class="p-5 mb-5 flex flex-col gap-5">
+            <!-- Email Input Field -->
             <label hlmLabel class="w-full">
                 Email
                 <input class="mt-1.5 w-full" placeholder="Enter email address" hlmInput autocomplete="off"
                     name="newemail" ngModel [formField]="form.controls.email" />
             </label>
 
+            <!-- Secure User ID (Password) Input Field -->
             <label hlmLabel class="w-full">
                 Secure User ID
                 <input class="mt-1.5 w-full" placeholder="Enter User ID" hlmInput autocomplete="off" name="newpassword"
@@ -32,12 +41,17 @@
             </label>
         </div>
 
+        <!-- Card Footer with Sign Up link and Login button -->
         <div hlmCardFooter class="justify-between">
+            <!-- Sign Up link -->
             <a href="/auth/signup" class="underline underline-offset-4 hover:text-primary">
                 Sign up
             </a>
+
+            <!-- Login Button with optional loading spinner -->
             <button hlmBtn [disabled]="createLoad()" variant="default" (click)="loginUser()">
                 <span>{{ createLoad() ? 'Logging in' : 'Login' }}</span>
+                <!-- Display spinner when loading -->
                 <hlm-spinner *ngIf="createLoad()" class="ml-2" size="sm" />
             </button>
         </div>

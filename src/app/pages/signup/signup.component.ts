@@ -1,4 +1,4 @@
-
+// Import statements for Angular and third-party libraries
 import { Component, computed, inject, signal } from '@angular/core';
 import { radixCheck, radixChevronDown } from '@ng-icons/radix-icons';
 import {
@@ -31,17 +31,19 @@ import {
 import { NgIf } from '@angular/common';
 import { InputErrorComponent } from '../../shared/input-error.component';
 
-
+// Additional imports for services and components
 import { UserService } from '../../services/user.service';
 import { AuthenticationService } from '../../services/authentication.service';
 import { AlertComponent } from '../../shared/alert.component';
 
-
+// Type definition for the Framework object
 type Framework = { label: string; value: string };
 
+// Angular Component decorator
 @Component({
   selector: 'user-management-signup',
   standalone: true,
+  // Importing necessary Angular directives and components
   imports: [
     NgIf,
     HlmIconComponent,
@@ -65,22 +67,26 @@ type Framework = { label: string; value: string };
     HttpClientModule,
     AlertComponent
   ],
-
+  // Providing icons and error component for the component
   providers: [provideIcons({ radixCheck, radixChevronDown }), withErrorComponent(InputErrorComponent)],
+  // Template URL for the HTML associated with this component
   templateUrl: `./signup.component.html`
-
 })
 
+// Angular Component class for the signup component
 export class SignUpComponent {
 
+  // Constructor injecting necessary services
   constructor(
-    private userService: UserService,
-    private authService: AuthenticationService,
+    public userService: UserService,
+    public authService: AuthenticationService,
     private clipboard: Clipboard
   ) { }
 
+  // Injecting SignalFormBuilder to create reactive forms
   private _sfb = inject(SignalFormBuilder);
 
+  // Signal for managing the state of the signup component
   public state = signal<{
     alert: boolean;
     status: 'idle' | 'loading' | 'success' | 'error';
@@ -101,8 +107,10 @@ export class SignUpComponent {
     actionText: '',
   });
 
+  // Computed property to determine if the form is in a loading state during user creation
   public createLoad = computed(() => this.state().status === 'loading' && this.state().updatedFrom === 'create');
 
+  // Callback for closing the alert
   public onCloseClick = () => {
     this.state.set({
       ...this.state(),
@@ -114,6 +122,7 @@ export class SignUpComponent {
     });
   };
 
+  // Callback for copying the ID to clipboard
   public onActionClick = () => {
     this.clipboard.copy(this.state().response?.id || "");
     this.state.set({ ...this.state(), actionText: "Copied!" });
@@ -122,9 +131,10 @@ export class SignUpComponent {
     }, 1000);
   };
 
+  // Signal for tracking the currently selected framework
   public currentFramework = signal<Framework | undefined>(undefined);
 
-
+  // Reactive form definition using SignalFormBuilder
   public form = this._sfb.createFormGroup(() => ({
     email: this._sfb.createFormField<string>('', {
       validators: [
@@ -152,7 +162,7 @@ export class SignUpComponent {
     }),
   }));
 
-
+  // Method to handle user creation (signup)
   public createUser() {
     if (this.form.state() !== 'VALID') {
       this.form.markAllAsTouched();
@@ -165,7 +175,7 @@ export class SignUpComponent {
     this.userService.createUser({ name, email, password, admin: false, approved: false, status: "pending" }).subscribe(
       (response) => {
         // Handle success
-        
+
         // Automatically log in the user upon successful signup
         this.authService.login(response);
 
@@ -189,7 +199,5 @@ export class SignUpComponent {
         this.state.set({ ...this.state(), status: "error", updatedFrom: "initial" });
       }
     );
-
   }
-
 }

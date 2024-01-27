@@ -1,31 +1,38 @@
-
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * The sign up component template *  * * * * * * * * -->
+<!-- * * * * * * * * * The sign-up component template *  * * * * * * * * -->
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
+<!-- Section for creating an account -->
 <div class="flex flex-col space-y-2 text-center mb-5">
+    <!-- Title of the sign-up section -->
     <h1 class="text-2xl font-semibold tracking-tight">
         Create an account
     </h1>
+    <!-- Subtitle providing additional instructions -->
     <p class="text-sm text-muted-foreground">
         Enter your email below to create your account
     </p>
 </div>
+
+<!-- Main section containing the form -->
 <section class="w-full" hlmCard>
-    <form> <!-- //class="flex flex-col items-end py-2"> -->
+    <form> <!-- Form for user input -->
         <div hlmCardContent class="p-5 mb-5 flex flex-col gap-5">
+            <!-- Input field for email -->
             <label hlmLabel class="w-full">
                 Email
                 <input class="mt-1.5 w-full" placeholder="Enter email address" hlmInput autocomplete="off"
                     name="newemail" ngModel [formField]="form.controls.email" />
             </label>
 
+            <!-- Input field for full name -->
             <label hlmLabel class="w-full">
                 Name
                 <input class="mt-1.5 w-full" placeholder="Enter full name" hlmInput autocomplete="off" name="newname"
                     ngModel [formField]="form.controls.name" />
             </label>
 
+            <!-- Input field for password -->
             <label hlmLabel class="w-full">
                 Password
                 <input class="mt-1.5 w-full" placeholder="Enter password" hlmInput autocomplete="off" name="newpassword"
@@ -33,17 +40,24 @@
             </label>
         </div>
 
+        <!-- Footer section with login link and create account button -->
         <div hlmCardFooter class=" flex md:flex-row flex-col-reverse justify-between gap-2 my-2">
+            <!-- Link to navigate to the login page -->
             <a href="/auth/login" class="underline underline-offset-4 hover:text-primary">
                 Login
             </a>
+            
+            <!-- Button to trigger account creation -->
             <button hlmBtn [disabled]="createLoad()" variant="secondary" (click)="createUser()">
                 <span>{{ createLoad() ? 'Creating' : 'Create' }} Account</span>
+                <!-- Display spinner while account creation is in progress -->
                 <hlm-spinner *ngIf="createLoad()" class="ml-2" size="sm" />
             </button>
         </div>
     </form>
 </section>
+
+<!-- Display an alert if there is any alert message in the component state -->
 <user-management-alert *ngIf="this.state().alert" [title]='this.state().title' [description]='this.state().description'
     [actionText]='this.state().actionText' (onCloseClick)="onCloseClick()"
     (onActionClick)='onActionClick()'></user-management-alert>
