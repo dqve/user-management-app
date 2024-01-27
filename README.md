@@ -26,7 +26,6 @@ This Angular-based User Management App allows users to sign up, submit user info
 
 ## Details
 
-
 - Application url: https://user-management-app-test.vercel.app
 - Application Repo: https://github.com/dqve/user-management-app
 - Server Repo: https://github.com/dqve/user-management-json-server
