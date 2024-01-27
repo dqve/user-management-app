@@ -1,0 +1,49 @@
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * The sign up component template *  * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+
+<div class="flex flex-col space-y-2 text-center mb-5">
+    <h1 class="text-2xl font-semibold tracking-tight">
+        Create an account
+    </h1>
+    <p class="text-sm text-muted-foreground">
+        Enter your email below to create your account
+    </p>
+</div>
+<section class="w-full" hlmCard>
+    <form> <!-- //class="flex flex-col items-end py-2"> -->
+        <div hlmCardContent class="p-5 mb-5 flex flex-col gap-5">
+            <label hlmLabel class="w-full">
+                Email
+                <input class="mt-1.5 w-full" placeholder="Enter email address" hlmInput autocomplete="off"
+                    name="newemail" ngModel [formField]="form.controls.email" />
+            </label>
+
+            <label hlmLabel class="w-full">
+                Name
+                <input class="mt-1.5 w-full" placeholder="Enter full name" hlmInput autocomplete="off" name="newname"
+                    ngModel [formField]="form.controls.name" />
+            </label>
+
+            <label hlmLabel class="w-full">
+                Password
+                <input class="mt-1.5 w-full" placeholder="Enter password" hlmInput autocomplete="off" name="newpassword"
+                    ngModel type="password" [formField]="form.controls.password" />
+            </label>
+        </div>
+
+        <div hlmCardFooter class=" flex md:flex-row flex-col-reverse justify-between gap-2 my-2">
+            <a href="/auth/login" class="underline underline-offset-4 hover:text-primary">
+                Login
+            </a>
+            <button hlmBtn [disabled]="createLoad()" variant="secondary" (click)="createUser()">
+                <span>{{ createLoad() ? 'Creating' : 'Create' }} Account</span>
+                <hlm-spinner *ngIf="createLoad()" class="ml-2" size="sm" />
+            </button>
+        </div>
+    </form>
+</section>
+<user-management-alert *ngIf="this.state().alert" [title]='this.state().title' [description]='this.state().description'
+    [actionText]='this.state().actionText' (onCloseClick)="onCloseClick()"
+    (onActionClick)='onActionClick()'></user-management-alert>
