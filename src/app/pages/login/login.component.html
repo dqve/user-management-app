@@ -1,0 +1,45 @@
+
+<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
+<!-- * * * * * * * * * The login component template *  * * * * * * * * -->
+<!-- * * * * * * * * * * * * * * * * * * ** ** * * * * * * * * * * * * -->
+
+
+<div class="flex flex-col space-y-2 text-center mb-5">
+    <h1 class="text-2xl font-semibold tracking-tight">
+        Log into your account
+    </h1>
+    <p class="text-sm text-muted-foreground">
+        Enter your email below to log into your account
+    </p>
+</div>
+<section class="w-full" hlmCard>
+    <div hlmCardHeader>
+        <h3 hlmCardTitle>Welcome back 👋</h3>
+        <p hlmCardDescription>We've missed you a whole lot.</p>
+    </div>
+    <form>
+        <div hlmCardContent class="p-5 mb-5 flex flex-col gap-5">
+            <label hlmLabel class="w-full">
+                Email
+                <input class="mt-1.5 w-full" placeholder="Enter email address" hlmInput autocomplete="off"
+                    name="newemail" ngModel [formField]="form.controls.email" />
+            </label>
+
+            <label hlmLabel class="w-full">
+                Secure User ID
+                <input class="mt-1.5 w-full" placeholder="Enter User ID" hlmInput autocomplete="off" name="newpassword"
+                    ngModel type="password" [formField]="form.controls.password" />
+            </label>
+        </div>
+
+        <div hlmCardFooter class="justify-between">
+            <a href="/auth/signup" class="underline underline-offset-4 hover:text-primary">
+                Sign up
+            </a>
+            <button hlmBtn [disabled]="createLoad()" variant="default" (click)="loginUser()">
+                <span>{{ createLoad() ? 'Logging in' : 'Login' }}</span>
+                <hlm-spinner *ngIf="createLoad()" class="ml-2" size="sm" />
+            </button>
+        </div>
+    </form>
+</section>
