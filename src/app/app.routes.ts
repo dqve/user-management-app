@@ -34,5 +34,5 @@ export const routes: Routes = [
             }
         ]
     },
-    { path: '', redirectTo: '/auth/auth/signup', pathMatch: 'full' },
+    { path: '', redirectTo: '/auth/signup', pathMatch: 'full' },
 ];
