@@ -29,6 +29,7 @@ import { TableEmptyComponent } from '../../shared/table-empty.component';
 import { AlertDialogComponent } from '../../shared/alert-dialog.component';
 import { AuthenticationService } from '../../services/authentication.service';
 import { HttpEventType, HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 // Define the structure of a Userlist object
 export type Userlist = {
@@ -74,7 +75,7 @@ const USER_DATA: Userlist[] = [];
   templateUrl: './userlist.component.html',
 })
 export class UserlistComponent {
-  constructor(private userService: UserService, private authService: AuthenticationService) {
+  constructor(private userService: UserService, private authService: AuthenticationService, private toastrs: ToastrService) {
     // Set up a debounced filter for email search
     effect(() => this._emailFilter.set(this._debouncedFilter() ?? ''), { allowSignalWrites: true });
   }
@@ -207,10 +208,12 @@ export class UserlistComponent {
   public approveUser(element: any) {
     this.state.set({ ...this.state(), status: 'loading', error: null });
     const currentUser = this.authService.getCurrentUser();
+    const userSession = this.authService.getSession();
 
+    
     if (currentUser && (element?.id || 0) - currentUser?.id < 2 && (element?.id || 0) !== currentUser?.id) {
       if (!element?.approved) {
-        this.userService.approveUser(element).subscribe(
+        !userSession()? this.toastrs.info("Session expired.") : this.userService.approveUser(element).subscribe(
           (response) => {
             // Handle success
             this.state.set({ ...this.state(), status: 'success', error: null });
@@ -244,10 +247,11 @@ export class UserlistComponent {
   public deleteUser(element: any) {
     this.state.set({ ...this.state(), status: 'loading', error: null });
     const currentUser = this.authService.getCurrentUser();
+    const userSession = this.authService.getSession();
 
     if (currentUser && (element?.id || 0) - currentUser?.id < 2 && (element?.id || 0) !== currentUser?.id) {
       if (element) {
-        this.userService.deleteUser(element).subscribe(
+        !userSession()? this.toastrs.info("Session expired.") : this.userService.deleteUser(element).subscribe(
           (response) => {
             // Handle success
             this.state.set({ ...this.state(), status: 'success', error: null });
@@ -280,7 +284,9 @@ export class UserlistComponent {
   // Method to fetch user data
   public fetchUser() {
     this.state.set({ ...this.state(), status: 'loading', error: null });
-    this.userService.getUsers().subscribe(
+    const userSession = this.authService.getSession();
+    
+    !this.authService.getSession()? this.toastrs.info("Session expired.") : this.userService.getUsers().subscribe(
       (users) => {
         // Handle success
         this._users.set(users);

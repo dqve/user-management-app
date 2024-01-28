@@ -47,9 +47,7 @@ export class AuthenticationService {
             if (data && data?.approved) {
               // Set expiration time for the user's session
               const expirationTime = new Date();
-              expirationTime.setMinutes(
-                expirationTime.getMinutes() + 30
-              ); // Set expiration time to 30 minutes
+              expirationTime.setMinutes(expirationTime.getMinutes() + 30); // Set expiration time to 30 minutes
 
               // Update the user data in localStorage with expiration time
               localStorage.setItem(
@@ -60,8 +58,7 @@ export class AuthenticationService {
               // Handle successful login
               this.handleSuccess('Login successful.', data);
 
-              // Update currentUserSubject and navigate to user-list page
-              localStorage.setItem('currentUser', JSON.stringify(data));
+              //navigate to user-list page
               this.currentUserSubject.next(data);
               this.router.navigate(['/user-list']);
             } else {
@@ -99,6 +96,25 @@ export class AuthenticationService {
   getCurrentUser(): any {
     return this.currentUserSubject.value;
   }
+
+// Method to get the current user session
+getSession(): any {
+  // Retrieve the user session from local storage
+  let unparsedValue = localStorage.getItem('currentUser');
+  // Parse the user session data
+  let userSession = JSON.parse(unparsedValue || "");
+  // Get the current date and time in ISO format
+  let nowDate = new Date().toISOString();
+  // Check if the user session is still valid based on the expiration time
+  let sessionsCheck = userSession?.expiresAt > nowDate;
+
+  // If the session is expired, perform logout
+  !sessionsCheck && this.logout();
+
+  // Return true if the session is still valid, otherwise return false
+  return sessionsCheck ? true : false;
+}
+
 
   // Method to check if the current user is an admin
   isAdmin(): boolean {
