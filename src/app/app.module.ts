@@ -15,4 +15,4 @@ import { AppComponent } from './app.component';
   ],  
   providers: [importProvidersFrom(ToastrModule),],   
 })  
-export class AppModule { }  
+export class AppModule { }

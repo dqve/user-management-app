@@ -213,7 +213,7 @@ export class UserlistComponent {
     
     if (currentUser && (element?.id || 0) - currentUser?.id < 2 && (element?.id || 0) !== currentUser?.id) {
       if (!element?.approved) {
-        !userSession()? this.toastrs.info("Session expired.") : this.userService.approveUser(element).subscribe(
+        !this.authService.getSession()? this.toastrs.info("Session expired.") : this.userService.approveUser(element).subscribe(
           (response) => {
             // Handle success
             this.state.set({ ...this.state(), status: 'success', error: null });
@@ -251,7 +251,7 @@ export class UserlistComponent {
 
     if (currentUser && (element?.id || 0) - currentUser?.id < 2 && (element?.id || 0) !== currentUser?.id) {
       if (element) {
-        !userSession()? this.toastrs.info("Session expired.") : this.userService.deleteUser(element).subscribe(
+        !this.authService.getSession()? this.toastrs.info("Session expired.") : this.userService.deleteUser(element).subscribe(
           (response) => {
             // Handle success
             this.state.set({ ...this.state(), status: 'success', error: null });
